@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_stars"
+        android:id="@+id/recyclerView"
         android:layout_width="378dp"
         android:layout_height="604dp"
         android:layout_marginStart="8dp"
@@ -19,5 +19,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:spanCount="1"
-        tools:listitem="@layout/item_star_repositories" />
+        tools:listitem="@layout/item_repositories" />
 </androidx.constraintlayout.widget.ConstraintLayout>

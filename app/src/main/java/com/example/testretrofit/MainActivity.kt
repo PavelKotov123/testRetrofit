@@ -1,84 +1,73 @@
 package com.example.testretrofit
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
-import com.example.testretrofit.Adapter.StarsAdapter
-import com.example.testretrofit.Model.StarModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testretrofit.databinding.ActivityMainBinding
+import com.example.testretrofit.retrofit.ApiServise
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-
-
-const val BASE_URL = "https://api.github.com/"
 class MainActivity : AppCompatActivity() {
-
+    private val TAG: String = "MainActivity"
+    lateinit var mainAdapter: MainAdapter
     lateinit var binding: ActivityMainBinding
-    lateinit var adapter: StarsAdapter
-    lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getMyData()    //Запуск функции для запроса репозиториев,и передача в логи
-
-        initial()    //Запуск функции для передачи списка в activity_main
-    }
-
-    //Функция передачи данных в activity_main
-    fun initial() {
-        recyclerView = binding.rvStars
-        adapter = StarsAdapter()
-        recyclerView.adapter = adapter
-        adapter.setlist(myStars())
 
     }
-    //Функция создания списка для теста передачи данных в activity_main
-    fun myStars(): ArrayList<StarModel> {
-        val starList = ArrayList<StarModel>()
-        val star = StarModel("qwerty123")
-        starList.add(star)
 
-        return starList
+    override fun onStart() {
+        super.onStart()
+        setupRecyclerView()
+        getDataFromApi()
     }
 
+    private fun setupRecyclerView(){
+        mainAdapter = MainAdapter(arrayListOf())
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(applicationContext)
+            adapter = mainAdapter
+        }
+    }
+    private fun getDataFromApi(){
 
-
-//Функция для получения данных из запроса по full_name избранных репозиториев
-    fun getMyData() {
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
-            .build()
-            .create(ApiInterfase::class.java)
-
-        val retrofitData = retrofitBuilder.getData()
-
-        retrofitData.enqueue(object : Callback<List<MyDataItem>?> {
-            override fun onResponse(call: Call<List<MyDataItem>?>, response: Response<List<MyDataItem>?>) {
-                val responseBody = response.body()!!
-                val myStringBuilder = StringBuilder()
-
-                for (myData in responseBody){
-                    myStringBuilder.append(myData.full_name)
-                    myStringBuilder.append("\n")
+        ApiServise.endpoint.getRepos()
+            .enqueue(object : Callback<MainModel>{
+                override fun onResponse(
+                    call: Call<MainModel>,
+                    response: Response<MainModel>
+                ) {
+                    if (response.isSuccessful){
+                        val result = response.body()
+                        showRepos( result!!)
+                    }
                 }
 
-                Log.d("MyLog","$myStringBuilder")
+                override fun onFailure(call: Call<MainModel>, t: Throwable) {
+                    printLog( t.toString() )
+                }
 
-            }
-            override fun onFailure(call: Call<List<MyDataItem>?>, t: Throwable) {
+            })
+    }
 
-                Log.d("MyLog","onFailure: "+t.message)
+    private fun printLog(message: String){
+        Log.d(TAG, message)
+    }
 
-            }
-        })
+    private fun showRepos(repos: MainModel) {
+        val results = repos.result
+        mainAdapter.setData( results )
+//        for(result in results){
+//            printLog("Repo: ${result.name}")
+//        }
     }
 
 }
