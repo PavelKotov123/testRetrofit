@@ -10,10 +10,10 @@ class MainAdapter(val results : ArrayList<MainModel.Result>)
     : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        LayoutInflater.from(parent.context).inflate(R.layout.item_repositories, parent, false) //val itemView = перед LayoutInflater и круглые скобки
-//        return ViewHolder(itemView)
-    }                                                                                                //Какая то проблема
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
+        LayoutInflater.from(parent.context).inflate(R.layout.item_repositories, parent, false)
+
+    )
 
     override fun getItemCount() = results.size
 
