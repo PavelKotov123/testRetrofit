@@ -40,18 +40,19 @@ class MainActivity : AppCompatActivity() {
     private fun getDataFromApi(){
 
         ApiServise.endpoint.getRepos()
-            .enqueue(object : Callback<MainModel>{
+            .enqueue(object : Callback<List<MainModel>>{
                 override fun onResponse(
-                    call: Call<MainModel>,
-                    response: Response<MainModel>
+                    call: Call<List<MainModel>>,
+                    response: Response<List<MainModel>>
                 ) {
                     if (response.isSuccessful){
                         val result = response.body()
                         showRepos( result!!)
+                        Log.d("gethha", result.toString())
                     }
                 }
 
-                override fun onFailure(call: Call<MainModel>, t: Throwable) {
+                override fun onFailure(call: Call<List<MainModel>>, t: Throwable) {
                     printLog( t.toString() )
                 }
 
@@ -62,12 +63,9 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, message)
     }
 
-    private fun showRepos(repos: MainModel) {
-        val results = repos.result
-        mainAdapter.setData( results )
-//        for(result in results){
-//            printLog("Repo: ${result.name}")
-//        }
+    private fun showRepos(repos: List<MainModel>) {
+        val result = repos
+        mainAdapter.setData( result )
     }
 
 }

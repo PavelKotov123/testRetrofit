@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_repositories.view.*
 
-class MainAdapter(val results : ArrayList<MainModel.Result>)
+class MainAdapter(val results : ArrayList<MainModel>)
     : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
 
@@ -24,7 +24,7 @@ class MainAdapter(val results : ArrayList<MainModel.Result>)
 
     class ViewHolder (val view: View) : RecyclerView.ViewHolder(view)
 
-    fun setData(name: List<MainModel.Result>){
+    fun setData(name: List<MainModel>){
         results.clear()
         results.addAll( name )
         notifyDataSetChanged()

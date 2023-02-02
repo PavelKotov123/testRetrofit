@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface ApiInterface {
 
-    @GET("/users/wt-t/repos")
-    fun getRepos(): Call<MainModel>
+    @GET("users/wt-t/repos")
+    fun getRepos(): Call<List<MainModel>>
 }
