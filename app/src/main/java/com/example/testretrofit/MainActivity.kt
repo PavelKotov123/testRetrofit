@@ -17,10 +17,15 @@ class MainActivity : AppCompatActivity() {
     lateinit var mainAdapter: MainAdapter
     lateinit var binding: ActivityMainBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        binding.bSearch.setOnClickListener { onStart() }
+
+
 
     }
 
@@ -37,9 +42,12 @@ class MainActivity : AppCompatActivity() {
             adapter = mainAdapter
         }
     }
-    private fun getDataFromApi(){
 
-        ApiServise.endpoint.getRepos()
+
+
+     private fun getDataFromApi(){
+
+        ApiServise.endpoint.getRepos("KsenyaBol")
             .enqueue(object : Callback<List<MainModel>>{
                 override fun onResponse(
                     call: Call<List<MainModel>>,
@@ -48,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful){
                         val result = response.body()
                         showRepos( result!!)
-                        Log.d("gethha", result.toString())
+                        Log.d("MyLog", result.toString())
                     }
                 }
 
@@ -67,5 +75,6 @@ class MainActivity : AppCompatActivity() {
         val result = repos
         mainAdapter.setData( result )
     }
+
 
 }
