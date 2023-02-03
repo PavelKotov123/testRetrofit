@@ -23,17 +23,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.bSearch.setOnClickListener { onStart() }
+        binding.bSearch.setOnClickListener {
+
+            var userName = binding.tUserName.text.toString()
+            Log.d("MYlog", "$userName")
+
+            setupRecyclerView()
+            getDataFromApi(userName)
+        }
 
 
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupRecyclerView()
-        getDataFromApi()
-    }
 
     private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
@@ -45,9 +47,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-     private fun getDataFromApi(){
+     private fun getDataFromApi(nameUser: String){
 
-        ApiServise.endpoint.getRepos("KsenyaBol")
+        ApiServise.endpoint.getRepos(nameUser)
             .enqueue(object : Callback<List<MainModel>>{
                 override fun onResponse(
                     call: Call<List<MainModel>>,
