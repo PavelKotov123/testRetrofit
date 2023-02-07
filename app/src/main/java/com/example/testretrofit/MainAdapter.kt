@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_repositories.view.*
 
-class MainAdapter(val results : ArrayList<MainModel>)
+class MainAdapter(val results : ArrayList<Repos>)
     : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     class ViewHolder (val view: View) : RecyclerView.ViewHolder(view)
 
@@ -21,7 +21,7 @@ class MainAdapter(val results : ArrayList<MainModel>)
         holder.view.tv_repositories.text = result.name
     }
 
-    fun setData(name: List<MainModel>){
+    fun setData(name: List<Repos>){
         results.clear()
         results.addAll( name )
         notifyDataSetChanged()

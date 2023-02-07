@@ -12,7 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-//    private val TAG: String = "MainActivity"
     lateinit var mainAdapter: MainAdapter
     lateinit var binding: ActivityMainBinding
 
@@ -21,15 +20,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupRecyclerView()
+
         binding.bSearch.setOnClickListener {
-
-            var userName = binding.tUserName.text.toString()
-            Log.d("MYlog", "$userName")
-
-            setupRecyclerView()
+            val userName: String = binding.tUserName.text.toString()
+            Log.d("MYlog", userName)
+//            setupRecyclerView()
             getDataFromApi(userName)
         }
-
     }
     private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
@@ -42,10 +40,10 @@ class MainActivity : AppCompatActivity() {
      private fun getDataFromApi(nameUser: String){
 
         ApiServise.endpoint.getRepos(nameUser)
-            .enqueue(object : Callback<List<MainModel>>{
+            .enqueue(object : Callback<List<Repos>>{
                 override fun onResponse(
-                    call: Call<List<MainModel>>,
-                    response: Response<List<MainModel>>
+                    call: Call<List<Repos>>,
+                    response: Response<List<Repos>>
                 ) {
                     if (response.isSuccessful){
                         val result = response.body()
@@ -53,8 +51,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("MyLog", result.toString())
                     }
                 }
-
-                override fun onFailure(call: Call<List<MainModel>>, t: Throwable) {
+                override fun onFailure(call: Call<List<Repos>>, t: Throwable) {
                     Log.d( "MyLog", "Error" )
                 }
 
