@@ -1,6 +1,5 @@
 package com.example.testretrofit
 
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    private val TAG: String = "MainActivity"
+//    private val TAG: String = "MainActivity"
     lateinit var mainAdapter: MainAdapter
     lateinit var binding: ActivityMainBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +30,7 @@ class MainActivity : AppCompatActivity() {
             getDataFromApi(userName)
         }
 
-
-
     }
-
-
     private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
         recyclerView.apply {
@@ -44,8 +38,6 @@ class MainActivity : AppCompatActivity() {
             adapter = mainAdapter
         }
     }
-
-
 
      private fun getDataFromApi(nameUser: String){
 
@@ -57,26 +49,15 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful){
                         val result = response.body()
-                        showRepos( result!!)
+                        mainAdapter.setData( result!!)
                         Log.d("MyLog", result.toString())
                     }
                 }
 
                 override fun onFailure(call: Call<List<MainModel>>, t: Throwable) {
-                    printLog( t.toString() )
+                    Log.d( "MyLog", "Error" )
                 }
 
             })
     }
-
-    private fun printLog(message: String){
-        Log.d(TAG, message)
-    }
-
-    private fun showRepos(repos: List<MainModel>) {
-        val result = repos
-        mainAdapter.setData( result )
-    }
-
-
 }
