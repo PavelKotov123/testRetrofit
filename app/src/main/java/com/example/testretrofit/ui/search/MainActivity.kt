@@ -1,11 +1,12 @@
-package com.example.testretrofit
+package com.example.testretrofit.ui.search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.testretrofit.repos.Repos
 import com.example.testretrofit.databinding.ActivityMainBinding
-import com.example.testretrofit.retrofit.ApiServise
+import com.example.testretrofit.data.remote.ApiServise
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding.bSearch.setOnClickListener {
             val userName: String = binding.tUserName.text.toString()
             Log.d("MYlog", userName)
-//            setupRecyclerView()
             getDataFromApi(userName)
         }
     }
@@ -41,10 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         ApiServise.endpoint.getRepos(nameUser)
             .enqueue(object : Callback<List<Repos>>{
-                override fun onResponse(
-                    call: Call<List<Repos>>,
-                    response: Response<List<Repos>>
-                ) {
+                override fun onResponse(call: Call<List<Repos>>, response: Response<List<Repos>>) {
                     if (response.isSuccessful){
                         val result = response.body()
                         mainAdapter.setData( result!!)
@@ -52,9 +49,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<List<Repos>>, t: Throwable) {
-                    Log.d( "MyLog", "Error" )
+                        Log.d("MyLog","Error")
                 }
-
             })
     }
 }

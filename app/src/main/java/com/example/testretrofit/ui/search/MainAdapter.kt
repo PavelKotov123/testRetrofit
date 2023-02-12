@@ -1,9 +1,11 @@
-package com.example.testretrofit
+package com.example.testretrofit.ui.search
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testretrofit.R
+import com.example.testretrofit.repos.Repos
 import kotlinx.android.synthetic.main.item_repositories.view.*
 
 class MainAdapter(val results : ArrayList<Repos>)
@@ -26,5 +28,4 @@ class MainAdapter(val results : ArrayList<Repos>)
         results.addAll( name )
         notifyDataSetChanged()
     }
-
 }

@@ -1,8 +1,7 @@
-package com.example.testretrofit.retrofit
+package com.example.testretrofit.data.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object ApiServise {
     val BASE_URL: String = "https://api.github.com/"
@@ -16,5 +15,4 @@ object ApiServise {
 
         return retrofit.create(ApiInterface::class.java)
     }
-
 }
