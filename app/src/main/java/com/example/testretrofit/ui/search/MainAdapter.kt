@@ -1,5 +1,6 @@
 package com.example.testretrofit.ui.search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class MainAdapter(val results : ArrayList<Repos>)
         holder.view.tv_repositories.text = result.name
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(name: List<Repos>){
         results.clear()
         results.addAll( name )
