@@ -13,9 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moxy.MvpAppCompatActivity
 import moxy.MvpView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : MvpAppCompatActivity(), MvpView {
     lateinit var mainAdapter: MainAdapter
@@ -30,16 +28,15 @@ class MainActivity : MvpAppCompatActivity(), MvpView {
         binding.bSearch.setOnClickListener {
             val userName: String = binding.tUserName.text.toString()
             Log.d("MYlog", userName)
-
             GlobalScope.launch(Dispatchers.IO) {
                 val response = ApiServise.endpoint.getRepos(userName)
-
-//                mainAdapter.results.addAll(response)
+                runOnUiThread {
+                    mainAdapter.setData(response)
+                }
                 Log.d("MyLog", response.toString())
             }
         }
     }
-
 private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
         recyclerView.apply {
@@ -48,23 +45,4 @@ private fun setupRecyclerView(){
         }
     }
 }
-
-
-
-
-
-//     private fun getDataFromApi(nameUser: String){
-//     ApiServise.endpoint.getRepos(nameUser).enqueue(object : Callback<List<Repos>>{
-//                override fun onResponse(call: Call<List<Repos>>, response: Response<List<Repos>>) {
-//                    if (response.isSuccessful){
-//                        val result = response.body()
-//                        mainAdapter.setData( result!!)
-//                        Log.d("MyLog", result.toString())
-//                    }
-//                }
-//                override fun onFailure(call: Call<List<Repos>>, t: Throwable) {
-//                        Log.d("MyLog","Error")
-//                }
-//            })
-//    }
 
