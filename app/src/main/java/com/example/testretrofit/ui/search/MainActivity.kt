@@ -3,6 +3,8 @@ package com.example.testretrofit.ui.search
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testretrofit.repos.Repos
 import com.example.testretrofit.databinding.ActivityMainBinding
@@ -28,16 +30,19 @@ class MainActivity : MvpAppCompatActivity(), MvpView {
         binding.bSearch.setOnClickListener {
             val userName: String = binding.tUserName.text.toString()
             Log.d("MYlog", userName)
-            GlobalScope.launch(Dispatchers.IO) {
-                val response = ApiServise.endpoint.getRepos(userName)
-                runOnUiThread {
+            GlobalScope.launch(Dispatchers.Main) {
+                binding.recyclerView.visibility = View.VISIBLE
+                try {
+                    val response = ApiServise.endpoint.getRepos(userName)
                     mainAdapter.setData(response)
+                } catch (ex: Exception) {
+                    Toast.makeText(applicationContext, "Error request", Toast.LENGTH_SHORT).show()
+                    binding.recyclerView.visibility = View.INVISIBLE
                 }
-                Log.d("MyLog", response.toString())
             }
         }
     }
-private fun setupRecyclerView(){
+    private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
         recyclerView.apply {
             layoutManager = LinearLayoutManager(applicationContext)

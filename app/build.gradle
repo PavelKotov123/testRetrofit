@@ -59,4 +59,6 @@ dependencies {
     //Библиотека Moxy
     implementation 'com.github.moxy-community:moxy-androidx:2.2.2'
     kapt "com.github.moxy-community:moxy-compiler:2.2.2"
+    //Библиотека coroutines.android для Dispatchers.Main
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
 }
