@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testretrofit.R
+import com.example.testretrofit.databinding.ActivityMainBinding
 import com.example.testretrofit.repos.Repos
 import kotlinx.android.synthetic.main.item_repositories.view.*
 
 class MainAdapter(val results : ArrayList<Repos>)
     : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+    lateinit var binding: ActivityMainBinding
     class ViewHolder (val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (

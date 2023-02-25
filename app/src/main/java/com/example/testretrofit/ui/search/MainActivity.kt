@@ -9,17 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testretrofit.repos.Repos
 import com.example.testretrofit.databinding.ActivityMainBinding
 import com.example.testretrofit.data.remote.ApiServise
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moxy.MvpAppCompatActivity
 import moxy.MvpView
+import moxy.ktx.moxyPresenter
+import moxy.presenter.InjectPresenter
 
 
-class MainActivity : MvpAppCompatActivity(), MvpView {
+class MainActivity : MvpAppCompatActivity(), PresenterInterface {
     lateinit var mainAdapter: MainAdapter
     lateinit var binding: ActivityMainBinding
+    @InjectPresenter
+    lateinit var repoPresenter: SearchPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,26 +31,24 @@ class MainActivity : MvpAppCompatActivity(), MvpView {
         setupRecyclerView()
 
         binding.bSearch.setOnClickListener {
-            val userName: String = binding.tUserName.text.toString()
-            Log.d("MYlog", userName)
-            GlobalScope.launch(Dispatchers.Main) {
-                binding.recyclerView.visibility = View.VISIBLE
-                try {
-                    val response = ApiServise.endpoint.getRepos(userName)
-                    mainAdapter.setData(response)
-                } catch (ex: Exception) {
-                    Toast.makeText(applicationContext, "Error request", Toast.LENGTH_SHORT).show()
-                    binding.recyclerView.visibility = View.INVISIBLE
-                }
-            }
+            repoPresenter.searchRepos()
         }
     }
     private fun setupRecyclerView(){
         mainAdapter = MainAdapter(arrayListOf())
-        recyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(applicationContext)
             adapter = mainAdapter
         }
+    }
+
+
+
+
+
+    override fun showError() {
+        Toast.makeText(applicationContext, "Error request", Toast.LENGTH_SHORT).show()
+        binding.recyclerView.visibility = View.INVISIBLE
     }
 }
 

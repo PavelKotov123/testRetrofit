@@ -1,19 +1,39 @@
 package com.example.testretrofit.ui.search
 
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import com.example.testretrofit.data.remote.ApiServise
+import com.example.testretrofit.databinding.ActivityMainBinding
 import com.example.testretrofit.repos.Repos
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import moxy.MvpView
 
 @InjectViewState
-class SearchPresenter : MvpPresenter<MvpView>() {
+class SearchPresenter : MvpPresenter<PresenterInterface>(){
+    lateinit var binding: ActivityMainBinding
+    lateinit var mainAdapter: MainAdapter
+    lateinit var userName: String
 
 
+ fun searchRepos(){
+        val userName: String = binding.tUserName.text.toString()
+        Log.d("MYlog", userName)
+        GlobalScope.launch(Dispatchers.Main) {
+            binding.recyclerView.visibility = View.VISIBLE
+            try {
+                val response = ApiServise.endpoint.getRepos(userName)
+                mainAdapter.setData(response)
+            } catch (ex: Exception) {
+                    Toast.makeText(this, "Error request", Toast.LENGTH_SHORT).show()
+                binding.recyclerView.visibility = View.INVISIBLE
+            }
+        }
+}
 
-    private var nameUser : String = ""
-    fun onButtonSearchClicked(repos: String) {
-        nameUser = repos
-
-    }
 
 }
