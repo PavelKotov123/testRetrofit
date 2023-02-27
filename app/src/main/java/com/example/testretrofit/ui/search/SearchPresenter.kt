@@ -18,22 +18,16 @@ class SearchPresenter : MvpPresenter<PresenterInterface>(){
     lateinit var binding: ActivityMainBinding
     lateinit var mainAdapter: MainAdapter
     lateinit var userName: String
-
-
  fun searchRepos(){
         val userName: String = binding.tUserName.text.toString()
         Log.d("MYlog", userName)
         GlobalScope.launch(Dispatchers.Main) {
-            binding.recyclerView.visibility = View.VISIBLE
             try {
                 val response = ApiServise.endpoint.getRepos(userName)
                 mainAdapter.setData(response)
             } catch (ex: Exception) {
-                    Toast.makeText(this, "Error request", Toast.LENGTH_SHORT).show()
-                binding.recyclerView.visibility = View.INVISIBLE
+                Log.d("MyLog","Work")
             }
         }
 }
-
-
 }
